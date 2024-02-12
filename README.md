@@ -1,15 +1,5 @@
 # Elysia with Bun runtime
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
-```bash
-bun create elysia ./elysia-example
-```
+Projeto para a [segunda edição da Rinha de Backend](https://github.com/zanfranceschi/rinha-de-backend-2024-q1)
 
-## Development
-To start the development server run:
-```bash
-bun run dev
-```
-
-Open http://localhost:3000/ with your browser to see the result.
+Tecnologias utilizadas: Bun, Elysia, pg, TypeScript.
