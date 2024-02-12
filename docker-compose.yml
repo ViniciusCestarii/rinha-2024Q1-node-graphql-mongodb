@@ -4,7 +4,7 @@ services:
   api01: &api
     # Lembre-se de que seu serviço HTTP deve estar hospedado num repositório
     # publicamente acessível! Ex.: hub.docker.com
-    image: viniciuscestarii/rinha-2024q1-bun-server:1.0
+    image: viniciuscestarii/rinha-2024q1-bun-server:latest
     hostname: api01
     environment:
       - DB_HOSTNAME=db
