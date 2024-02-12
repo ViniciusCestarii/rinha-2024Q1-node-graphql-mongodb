@@ -1,12 +1,14 @@
 {
-  "name": "fast-elysia",
+  "name": "fast-bun",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/http/server.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@types/pg": "^8.11.0",
+    "elysia": "latest",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "bun-types": "latest"
