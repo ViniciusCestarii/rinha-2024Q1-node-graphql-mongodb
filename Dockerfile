@@ -6,10 +6,12 @@ WORKDIR /app
 
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=bun.lockb,target=bun.lockb \
-    bun i --frozen-lockfile
+    bun i --frozen-lockfile --production
 
 COPY . .
 
-EXPOSE 3000
+RUN bun run build
 
-CMD bun dev
+EXPOSE 4001
+
+CMD bun start

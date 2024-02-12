@@ -2,7 +2,9 @@
   "name": "rinha-2024Q1-bun"  ,
   "version": "1.0.50",
   "scripts": {
-    "dev": "bun run --watch src/http/server.ts"
+    "dev": "bun run --watch src/http/server.ts",
+    "build": "bun build src/http/server.ts --target=bun",
+    "start": "NODE_ENV=production bun src/http/server.ts"
   },
   "dependencies": {
     "@types/pg": "^8.11.0",
