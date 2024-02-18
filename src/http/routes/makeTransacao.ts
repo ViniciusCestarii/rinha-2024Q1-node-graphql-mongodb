@@ -7,6 +7,15 @@ export const makeTransacao = new Elysia().post(
     const { id } = params
     const { descricao, tipo, valor } = body
 
+    if (tipo !== "d" && tipo !== "c") {
+      set.status = 422
+      return
+    }
+
+    if (id > 5 || id < 1) {
+      set.status = 404
+      return
+    }
 
     const clienteReturn = await findById(id)
 
@@ -60,9 +69,7 @@ export const makeTransacao = new Elysia().post(
             minLength: 1,
             maxLength: 10,
         }),
-        tipo: t.String({
-            enum: ['c', 'd']
-        })
+        tipo: t.String()
     }),
   },
 )

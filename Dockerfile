@@ -12,6 +12,4 @@ COPY . .
 
 RUN bun run build
 
-EXPOSE 4001
-
 CMD bun start
