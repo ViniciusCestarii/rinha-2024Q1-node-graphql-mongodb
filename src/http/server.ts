@@ -7,7 +7,7 @@ const app = new Elysia()
   .use(getExtrato)
   .use(makeTransacao)
 
-app.listen(process.env.PORT ?? 3000)
+app.listen(process.env.HTTP_PORT ?? 3000)
 
 console.log(
   `🔥 HTTP server running at ${app.server?.hostname}:${app.server?.port}`,
