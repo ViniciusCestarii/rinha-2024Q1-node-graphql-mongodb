@@ -1,4 +1,4 @@
-import Elysia, { t } from 'elysia'
+import Elysia from 'elysia'
 import { createTransacao, findById, updateExtrato } from '../../db/repository'
 
 export const makeTransacao = new Elysia().post(
