@@ -12,4 +12,4 @@ COPY . .
 
 RUN bun run build
 
-CMD bun start
+ENTRYPOINT [ "bun", "start" ]

@@ -5,7 +5,7 @@ import { getExtrato } from './routes/getExtrato'
 const app = new Elysia()
   .use(getExtrato)
   .use(makeTransacao)
-  .onError(({ set, error }) => {
+  .onError(({ error }) => {
     return new Response(error.message, { status: 500 })
   })
 
