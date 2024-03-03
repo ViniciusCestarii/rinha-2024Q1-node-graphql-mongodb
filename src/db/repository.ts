@@ -1,6 +1,6 @@
 import pool from "./db";
 
-export const findById = async (id: number) =>  {
+export const findById = (id: number) => {
     const query = `
     SELECT
         saldo,
@@ -12,23 +12,24 @@ export const findById = async (id: number) =>  {
     return pool.query(query, [id]);
 }
 
-export const updateExtrato = async (id: number, saldo: number) =>  {
+export const updateExtrato = (id: number, saldo: number) => {
     const query = `
     UPDATE clientes
-    SET saldo = $1
-    WHERE id = $2;
+    SET saldo = saldo + $1 
+    WHERE id = $2
+    AND (saldo + $1 >= -limite);
     `
-    await pool.query(query, [saldo, id]);
+    return pool.query(query, [saldo, id]);
 }
 
-interface createExtratoHistory {
+interface CreateExtratoHistory {
     descricao: string;
     tipo: string;
     valor: number;
     cliente_id: number;
 }
 
-export const createTransacao = async ({valor, tipo, descricao, cliente_id}: createExtratoHistory) =>  {
+export const createTransacao = ({ valor, tipo, descricao, cliente_id }: CreateExtratoHistory) => {
     const query = `
     INSERT INTO transacoes (valor, tipo, descricao, cliente_id)
             VALUES
@@ -37,7 +38,7 @@ export const createTransacao = async ({valor, tipo, descricao, cliente_id}: crea
     return pool.query(query, [valor, tipo, descricao, cliente_id]);
 }
 
-export const getTransacoes = async (id: number) =>  {
+export const getTransacoes = (id: number) => {
     const query = `
     SELECT valor, tipo, descricao, realizada_em
     FROM transacoes
@@ -45,7 +46,7 @@ export const getTransacoes = async (id: number) =>  {
     ORDER BY realizada_em DESC
     LIMIT 10;
     `
-    
+
     return pool.query(query, [id]);
 }
 

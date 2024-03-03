@@ -4,10 +4,17 @@ import { createTransacao, findById, updateExtrato } from '../../db/repository'
 export const makeTransacao = new Elysia().post(
   '/clientes/:id/transacoes',
   async ({ set, params, body }) => {
-    const { id } = params
-    const { descricao, tipo, valor } = body
+    const { id: idParam } = params
+    const id = parseInt(idParam)
 
-    if (tipo !== "d" && tipo !== "c") {
+    const { descricao, tipo, valor } = body as any;
+
+    if (
+      tipo !== "d" && tipo !== "c" ||
+      !descricao || descricao.length > 10 || descricao.length < 1 ||
+      !Number.isInteger(valor) ||
+      valor < 0
+    ) {
       set.status = 422
       return
     }
@@ -17,59 +24,34 @@ export const makeTransacao = new Elysia().post(
       return
     }
 
-    const clienteReturn = await findById(id)
-
-    if(clienteReturn.rows.length === 0) {
-      set.status = 404
-      return
-    }
-
-    const cliente = clienteReturn.rows[0]
-
-    if(tipo === "d") {
-      const newSaldo = cliente.saldo - valor
-
-      if((cliente.limite * -1) > newSaldo) {
-        set.status = 422 
+    if (tipo === "d") {
+      const extratoResult = await updateExtrato(id, valor * -1)
+      if (extratoResult.rowCount === 0) {
+        set.status = 422
         return
       }
-
-      updateExtrato(id, newSaldo)
-      createTransacao({descricao, tipo, valor, cliente_id: id})
-
-      set.status = 200
-      return {
-        limite: cliente.limite,
-        saldo: newSaldo
-      }
-    }
-
-    if(tipo === "c") {
-      const newSaldo = cliente.saldo + valor
-
-      updateExtrato(id, newSaldo)
-      createTransacao({descricao, tipo, valor, cliente_id: id})
+      createTransacao({ descricao, tipo, valor, cliente_id: id })
+      const clienteReturn = await findById(id)
+      const cliente = clienteReturn.rows[0]
 
       set.status = 200
       return {
         limite: cliente.limite,
-        saldo: newSaldo
+        saldo: cliente.saldo
       }
     }
-  },
-  {
-    params: t.Object({
-      id: t.Numeric(),
-    }),
-    body: t.Object({
-        valor: t.Integer({
-          minimum: 0,
-        }),
-        descricao: t.String({
-            minLength: 1,
-            maxLength: 10,
-        }),
-        tipo: t.String()
-    }),
+
+    if (tipo === "c") {
+      await updateExtrato(id, valor)
+      createTransacao({ descricao, tipo, valor, cliente_id: id })
+      const clienteReturn = await findById(id)
+      const cliente = clienteReturn.rows[0]
+
+      set.status = 200
+      return {
+        limite: cliente.limite,
+        saldo: cliente.saldo
+      }
+    }
   },
 )
