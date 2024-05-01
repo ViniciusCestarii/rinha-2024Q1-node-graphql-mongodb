@@ -1,42 +1,42 @@
-import Elysia from 'elysia'
-import { findById, getTransacoes } from '../../db/repository'
+import Router from 'koa-router';
+import { findById, getTransacoes } from '../../db/repository';
 
-export const getExtrato = new Elysia().get(
-  '/clientes/:id/extrato',
-  async ({ set, params: { id: idParam } }) => {
+export const getExtrato = new Router().get('/clientes/:id/extrato', async (ctx) => {
+  const { id: idParam } = ctx.params;
+  const id = parseInt(idParam, 10);
 
-    const id = parseInt(idParam)
+  if (isNaN(id)) {
+    ctx.status = 422;
+    ctx.body = 'Invalid ID';
+    return;
+  }
 
-    if (isNaN(id)) {
-      set.status = 422
-      return
-    }
+  if (id > 5 || id < 1) {
+    ctx.status = 404;
+    ctx.body = 'Client not found';
+    return;
+  }
 
-    if (id > 5 || id < 1) {
-      set.status = 404
-      return
-    }
+  const clienteResult = await findById(id);
+  const cliente = clienteResult.rows[0];
 
-    const clienteResult = await findById(id)
-    const cliente = clienteResult.rows[0]
+  if (!cliente) {
+    ctx.status = 404;
+    ctx.body = 'Client not found';
+    return;
+  }
 
-    if (!cliente) {
-      set.status = 404
-      return
-    }
+  const transacoesResult = await getTransacoes(id);
 
-    const transacoesResult = await getTransacoes(id)
+  const saldoTransacoes = {
+    saldo: {
+      total: cliente.saldo,
+      limite: cliente.limite,
+      data_extrato: new Date(),
+    },
+    ultimas_transacoes: transacoesResult.rows,
+  };
 
-    const saldoTransacoes = {
-      saldo: {
-        total: cliente.saldo,
-        limite: cliente.limite,
-        data_extrato: new Date()
-      },
-      ultimas_transacoes: transacoesResult.rows
-    }
-
-    set.status = 200
-    return saldoTransacoes
-  },
-)
+  ctx.status = 200;
+  ctx.body = saldoTransacoes;
+});

@@ -1,4 +1,4 @@
-FROM oven/bun:1.0.21
+FROM node:18-alpine
 
 ENV NODE_ENV production
 
@@ -10,6 +10,6 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 COPY . .
 
-RUN npx tsc
+RUN npm run build
 
 ENTRYPOINT [ "npm", "run", "start" ]

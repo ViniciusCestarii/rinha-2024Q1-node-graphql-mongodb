@@ -2,18 +2,25 @@
   "name": "rinha-2024Q1-node-graphql-mongodb",
   "version": "1.0.50",
   "scripts": {
-    "dev": "npx ts-node src/http/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/http/server.ts",
+    "build": "tsc",
     "start": "node build/http/server.js"
   },
   "dependencies": {
-    "@types/pg": "^8.11.0",
+    "@types/koa-bodyparser": "^4.3.12",
+    "dotenv": "^16.4.5",
     "elysia": "latest",
     "koa": "^2.15.3",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^12.0.1",
     "pg": "^8.11.3"
   },
   "devDependencies": {
+    "@types/pg": "^8.11.0",
+    "@types/koa": "^2.15.0",
+    "@types/koa-router": "^7.4.8",
     "bun-types": "latest",
-    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.5"
   },
   "module": "src/index.js"

@@ -4,7 +4,10 @@ services:
   api01: &api
     # Lembre-se de que seu serviço HTTP deve estar hospedado num repositório
     # publicamente acessível! Ex.: hub.docker.com
-    image: viniciuscestarii/rinha-2024q1-bun-server:latest
+    # image: viniciuscestarii/rinha-2024q1-bun-server:latest
+    build: .
+    env_file:
+      - .env
     hostname: api01
     environment:
       - HTTP_PORT=3000
@@ -43,13 +46,11 @@ services:
           cpus: "0.1"
           memory: "10MB"
 
-  db:
+  db: # hostname: db
     image: postgres:latest
     hostname: db
-    environment:
-      - POSTGRES_PASSWORD=123
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=rinha
+    env_file:
+      - .env
     volumes:
       - ./script.sql:/docker-entrypoint-initdb.d/script.sql
     deploy:
