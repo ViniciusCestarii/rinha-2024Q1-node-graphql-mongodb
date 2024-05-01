@@ -1,18 +1,20 @@
 {
-  "name": "rinha-2024Q1-bun"  ,
+  "name": "rinha-2024Q1-node-graphql-mongodb",
   "version": "1.0.50",
   "scripts": {
-    "dev": "bun run --watch src/http/server.ts",
-    "build": "bun build src/http/server.ts --target=bun",
-    "start": "NODE_ENV=production bun src/http/server.ts"
+    "dev": "npx ts-node src/http/server.ts",
+    "start": "node build/http/server.js"
   },
   "dependencies": {
     "@types/pg": "^8.11.0",
     "elysia": "latest",
+    "koa": "^2.15.3",
     "pg": "^8.11.3"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   },
   "module": "src/index.js"
 }

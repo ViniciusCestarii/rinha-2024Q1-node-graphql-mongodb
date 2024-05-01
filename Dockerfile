@@ -5,11 +5,11 @@ ENV NODE_ENV production
 WORKDIR /app
 
 RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=bun.lockb,target=bun.lockb \
-    bun i --frozen-lockfile --production
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    npm ci
 
 COPY . .
 
-RUN bun run build
+RUN npx tsc
 
-ENTRYPOINT [ "bun", "start" ]
+ENTRYPOINT [ "npm", "run", "start" ]
