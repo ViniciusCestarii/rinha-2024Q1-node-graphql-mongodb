@@ -1,14 +1,20 @@
-import "dotenv/config";
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
-import pg from 'pg'
-const {POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB } = process.env
+const { MONGODB_URI } = process.env;
 
-const pool = new pg.Pool({
-    user: POSTGRES_USER, 
-    host: 'db',                       
-    database: POSTGRES_DB, 
-    password: POSTGRES_PASSWORD, 
-    port: 5432,                       
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env');
+}
+
+// Connect to MongoDB
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('Successfully connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
   });
 
-export default pool;
+export default mongoose;
