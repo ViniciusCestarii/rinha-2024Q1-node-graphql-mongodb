@@ -9,7 +9,7 @@ export interface ICliente extends Document {
 }
 
 const clienteSchema = new Schema({
-  clientId: { type: Number, required: true, unique: true }, // Unique numeric ID
+  clientId: { type: Schema.Types.Number, required: true, unique: true },
   saldo: { type: Number, required: true, default: 0 },
   limite: { type: Number, required: true },
   nome: { type: String, required: true },
@@ -29,7 +29,7 @@ const transacaoSchema = new Schema({
   valor: { type: Number, required: true },
   tipo: { type: String, required: true },
   descricao: { type: String, required: true },
-  clientId: { type: Number, ref: 'Cliente', required: true },
+  clientId: { type: Schema.Types.Number, ref: 'Cliente', required: true },
   realizada_em: { type: Date, default: Date.now },
 });
 

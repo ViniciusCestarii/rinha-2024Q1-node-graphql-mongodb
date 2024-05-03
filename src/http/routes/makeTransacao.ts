@@ -32,7 +32,7 @@ export const makeTransacao = new Router().post('/clientes/:id/transacoes', async
 
   if (tipo === 'd') {
     const extratoResult = await updateExtrato(id, valor * -1);
-    if (extratoResult.upsertedCount === 0) {
+    if (!extratoResult) {
       ctx.status = 422;
       ctx.body = { error: 'Failed to update balance' };
       return;

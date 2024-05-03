@@ -5,8 +5,7 @@ export const findById = async (clientId: number) => {
 };
 
 export const updateExtrato = async (clientId: number, saldo: number) => {
-      // todo improve check for debit
-  return Cliente.updateOne(
+  return Cliente.findOneAndUpdate(
     {
       clientId,
       $expr: { $gte: [{ $sum: ['$saldo', saldo] }, { $multiply: [-1, '$limite'] }] },
