@@ -1,17 +1,18 @@
 import { Cliente, Transacao } from './schemas';
 
 export const findById = async (clientId: number) => {
-  return Cliente.findOne({ clientId }, 'saldo limite').exec();
+  return Cliente.findOne({ clientId }, 'saldo limite').lean();
 };
 
 export const updateExtrato = async (clientId: number, saldo: number) => {
+      // todo improve check for debit
   return Cliente.updateOne(
     {
       clientId,
       $expr: { $gte: [{ $sum: ['$saldo', saldo] }, { $multiply: [-1, '$limite'] }] },
     },
     { $inc: { saldo: saldo } }
-  ).exec();
+  ).lean();
 };
 interface CreateExtratoHistory {
   descricao: string;
@@ -35,5 +36,5 @@ export const getTransacoes = async (clientId: number) => {
   return Transacao.find({ clientId })
     .sort({ realizada_em: -1 })
     .limit(10)
-    .exec();
+    .lean();
 };

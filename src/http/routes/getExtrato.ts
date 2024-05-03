@@ -17,10 +17,9 @@ export const getExtrato = new Router().get('/clientes/:id/extrato', async (ctx) 
     return;
   }
 
-  const clienteResult = await findById(id);
-  const cliente = clienteResult.rows[0];
+  const client = await findById(id);
 
-  if (!cliente) {
+  if (!client) {
     ctx.status = 404;
     ctx.body = 'Client not found';
     return;
@@ -30,11 +29,11 @@ export const getExtrato = new Router().get('/clientes/:id/extrato', async (ctx) 
 
   const saldoTransacoes = {
     saldo: {
-      total: cliente.saldo,
-      limite: cliente.limite,
+      total: client.saldo,
+      limite: client.limite,
       data_extrato: new Date(),
     },
-    ultimas_transacoes: transacoesResult.rows,
+    ultimas_transacoes: transacoesResult.length,
   };
 
   ctx.status = 200;

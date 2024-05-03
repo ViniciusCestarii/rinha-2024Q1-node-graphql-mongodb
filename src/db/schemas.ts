@@ -21,7 +21,7 @@ interface ITransacao extends Document {
   valor: number;
   tipo: string;
   descricao: string;
-  cliente_id: mongoose.Schema.Types.ObjectId;
+  clientId: number;
   realizada_em: Date;
 }
 
@@ -29,7 +29,7 @@ const transacaoSchema = new Schema({
   valor: { type: Number, required: true },
   tipo: { type: String, required: true },
   descricao: { type: String, required: true },
-  cliente_id: { type: Schema.Types.ObjectId, ref: 'Cliente', required: true },
+  clientId: { type: Number, ref: 'Cliente', required: true },
   realizada_em: { type: Date, default: Date.now },
 });
 
