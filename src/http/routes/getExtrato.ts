@@ -33,7 +33,7 @@ export const getExtrato = new Router().get('/clientes/:id/extrato', async (ctx) 
       limite: client.limite,
       data_extrato: new Date(),
     },
-    ultimas_transacoes: transacoesResult.length,
+    ultimas_transacoes: transacoesResult,
   };
 
   ctx.status = 200;
