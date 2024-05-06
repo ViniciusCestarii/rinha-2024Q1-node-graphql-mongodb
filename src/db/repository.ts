@@ -1,52 +1,44 @@
-import pool from "./db";
+import { Cliente, Transacao } from './schemas'
 
-export const findById = (id: number) => {
-    const query = `
-    SELECT
-        saldo,
-        limite
-    FROM
-        clientes
-    WHERE "id" = $1;
-    `
-    return pool.query(query, [id]);
+export const findById = async (clientId: number) => {
+  const cliente = await Cliente.findOne({ clientId }, 'saldo limite').lean()
+  return cliente
 }
 
-export const updateExtrato = (id: number, saldo: number) => {
-    const query = `
-    UPDATE clientes
-    SET saldo = saldo + $1 
-    WHERE id = $2
-    AND (saldo + $1 >= -limite);
-    `
-    return pool.query(query, [saldo, id]);
-}
+export const updateExtrato = async (clientId: number, saldo: number) => {
+  const cliente = await Cliente.findOneAndUpdate(
+    {
+      clientId,
+      $expr: { $gte: [{ $sum: ['$saldo', saldo] }, { $multiply: [-1, '$limite'] }] },
+    },
+    { $inc: { saldo: saldo } }
+  ).exec()
 
+  return cliente
+}
 interface CreateExtratoHistory {
-    descricao: string;
-    tipo: string;
-    valor: number;
-    cliente_id: number;
+  descricao: string
+  tipo: string
+  valor: number
+  clientId: number
 }
 
-export const createTransacao = ({ valor, tipo, descricao, cliente_id }: CreateExtratoHistory) => {
-    const query = `
-    INSERT INTO transacoes (valor, tipo, descricao, cliente_id)
-            VALUES
-            ($1, $2, $3, $4);
-            `
-    return pool.query(query, [valor, tipo, descricao, cliente_id]);
+export const createTransacao = async ({ valor, tipo, descricao, clientId }: CreateExtratoHistory) => {
+  const transacao = await Transacao.create(
+    {
+      valor,
+      tipo,
+      descricao,
+      clientId,
+    }
+  )
+
+  return transacao
 }
 
-export const getTransacoes = (id: number) => {
-    const query = `
-    SELECT valor, tipo, descricao, realizada_em
-    FROM transacoes
-    WHERE cliente_id = $1
-    ORDER BY realizada_em DESC
-    LIMIT 10;
-    `
-
-    return pool.query(query, [id]);
+export const getTransacoes = async (clientId: number) => {
+  return Transacao.find({ clientId })
+    .sort({ realizada_em: -1 })
+    .limit(10)
+    .exec()
 }
-

@@ -32,7 +32,7 @@ export const makeTransacao = new Router().post('/clientes/:id/transacoes', async
 
   if (tipo === 'd') {
     const extratoResult = await updateExtrato(id, valor * -1);
-    if (extratoResult.rowCount === 0) {
+    if (!extratoResult) {
       ctx.status = 422;
       ctx.body = { error: 'Failed to update balance' };
       return;
@@ -41,9 +41,14 @@ export const makeTransacao = new Router().post('/clientes/:id/transacoes', async
     await updateExtrato(id, valor);
   }
 
-  await createTransacao({ descricao, tipo, valor, cliente_id: id });
-  const clienteReturn = await findById(id);
-  const cliente = clienteReturn.rows[0];
+  await createTransacao({ descricao, tipo, valor, clientId: id });
+  const cliente = await findById(id);
+
+  if (!cliente) {
+    ctx.status = 404;
+    ctx.body = { error: 'Client not found' };
+    return;
+  }
 
   ctx.status = 200;
   ctx.body = {

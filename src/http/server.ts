@@ -28,7 +28,6 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 app.silent = false;
 
-// Start server
 const port = process.env.HTTP_PORT ?? 3000;
 app.listen(port, () => {
   console.log(`🔥 HTTP server running at http://localhost:${port}`);
