@@ -1,4 +1,3 @@
-import "dotenv/config"; // Load environment variables
 import { Cliente, Transacao } from "./schemas";
 import mongoose from "./db";
 

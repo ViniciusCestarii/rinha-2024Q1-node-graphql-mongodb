@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@types/koa-bodyparser": "^4.3.12",
-    "dotenv": "^16.4.5",
     "elysia": "latest",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
@@ -23,8 +22,10 @@
     "@types/mongoose": "^5.11.97",
     "@types/pg": "^8.11.0",
     "bun-types": "latest",
+    "dotenv": "^16.4.5",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "zod": "^3.23.8"
   },
   "module": "src/index.js"
 }
