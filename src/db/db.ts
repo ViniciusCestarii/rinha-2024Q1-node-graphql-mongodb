@@ -3,17 +3,18 @@ import env from '../env';
 
 const { MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD, MONGO_INITDB_DATABASE } = env;
 
-const mongoUri =`mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@db:27017/${MONGO_INITDB_DATABASE}`
+const mongoUri =`mongodb+srv://viniciuscestari01:7KwbMnHPAKfU6Spl@rinha-2024-q1-developme.npgoidx.mongodb.net/`
 
+export const connectDb = () => {
 console.log('Connecting to MongoDB:', mongoUri);
 
 mongoose
   .connect(mongoUri)
-  .then(() => {
-    console.log('Successfully connected to MongoDB');
-  })
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
   });
 
-export default mongoose;
+  mongoose.connection.once('open', () => {
+    console.log('Connected to the database');
+  });
+}

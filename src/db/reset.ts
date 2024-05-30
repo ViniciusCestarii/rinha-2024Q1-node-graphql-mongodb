@@ -1,5 +1,5 @@
-import { Cliente, Transacao } from "./schemas";
-import mongoose from "./db";
+import mongoose from "mongoose";
+import { Cliente, Transacao } from "./models";
 
 const reset = async () => {
 

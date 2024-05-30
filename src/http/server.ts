@@ -5,9 +5,14 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import { makeTransacao } from "./routes/makeTransacao";
 import env from "../env";
+import { connectDb } from "../db/db";
+import { graphqlHTTP } from "koa-graphql";
+import schemas from "./schemas";
 
 const app = new Koa();
 const router = new Router();
+
+connectDb()
 
 // Attach routes
 router.use(makeTransacao.routes());
@@ -27,6 +32,12 @@ app.use(async (ctx, next) => {
 app.use(bodyParser());
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+router.all('/graphql', graphqlHTTP({
+  schema: schemas,
+  graphiql: true
+}));
+
 app.silent = false;
 
 const port = env.HTTP_PORT

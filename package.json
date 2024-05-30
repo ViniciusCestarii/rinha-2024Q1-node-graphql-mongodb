@@ -10,8 +10,10 @@
   "dependencies": {
     "@types/koa-bodyparser": "^4.3.12",
     "elysia": "latest",
+    "graphql": "^15.8.0",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
+    "koa-graphql": "^0.12.0",
     "koa-router": "^12.0.1",
     "mongoose": "^8.3.3",
     "pg": "^8.11.3"

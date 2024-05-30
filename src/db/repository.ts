@@ -1,4 +1,4 @@
-import { Cliente, Transacao } from './schemas'
+import { Cliente, Transacao } from './models'
 
 export const findById = async (clientId: number) => {
   const cliente = await Cliente.findOne({ clientId }, 'saldo limite').lean()
