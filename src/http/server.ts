@@ -1,9 +1,6 @@
-import { getExtrato } from "./routes/getExtrato";
-
 import Koa from 'koa'
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
-import { makeTransacao } from "./routes/makeTransacao";
 import env from "../env";
 import { connectDb } from "../db/db";
 import { graphqlHTTP } from "koa-graphql";
@@ -14,11 +11,6 @@ const router = new Router();
 
 connectDb()
 
-// Attach routes
-router.use(makeTransacao.routes());
-router.use(getExtrato.routes());
-
-// Error handling middleware
 app.use(async (ctx, next) => {
   try {
     await next();
