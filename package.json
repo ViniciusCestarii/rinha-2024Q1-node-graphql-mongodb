@@ -16,7 +16,9 @@
     "koa-graphql": "^0.12.0",
     "koa-router": "^12.0.1",
     "mongoose": "^8.3.3",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/koa": "^2.15.0",
@@ -24,10 +26,8 @@
     "@types/mongoose": "^5.11.97",
     "@types/pg": "^8.11.0",
     "bun-types": "latest",
-    "dotenv": "^16.4.5",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.4.5",
-    "zod": "^3.23.8"
+    "typescript": "^5.4.5"
   },
   "module": "src/index.js"
 }

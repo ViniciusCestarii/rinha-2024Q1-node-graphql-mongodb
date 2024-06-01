@@ -27,8 +27,6 @@ services:
     # Essa sintaxe reusa o que foi declarado em 'api01'.
     <<: *api 
     hostname: api02
-    environment:
-      - HTTP_PORT=3000
  
   nginx:
     image: nginx:latest
@@ -47,10 +45,14 @@ services:
           memory: "10MB"
 
   db:
-    image: mongo:latest
+    image: mongo
     hostname: db
     env_file:
       - .env
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    ports:
+      - "27017:27017"
     deploy:
       resources:
         limits:
