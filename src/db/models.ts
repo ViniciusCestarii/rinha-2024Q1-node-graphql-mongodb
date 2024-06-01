@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
-
-const { Schema } = mongoose;
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ICliente extends Document {
+  clientId: number;
   nome: string;
   saldo: number;
   limite: number;

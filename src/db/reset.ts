@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 import { Cliente, Transacao } from "./models";
+import { connectDb } from "./db";
 
 const reset = async () => {
+
+  await connectDb();
 
   await Cliente.deleteMany({})
   await Transacao.deleteMany({})

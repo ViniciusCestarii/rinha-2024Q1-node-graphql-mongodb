@@ -1,7 +1,7 @@
 import { Cliente, Transacao } from './models'
 
 export const findById = async (clientId: number) => {
-  const cliente = await Cliente.findOne({ clientId }, 'saldo limite').lean()
+  const cliente = await Cliente.findOne({ clientId }).lean()
   return cliente
 }
 

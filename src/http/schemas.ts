@@ -1,5 +1,13 @@
-import { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull
+} from 'graphql';
 import { Cliente, Transacao } from '../db/models';
+import { createTransacao, findById, updateExtrato } from '../db/repository';
 
 const ClienteType = new GraphQLObjectType({
   name: 'Cliente',
@@ -25,6 +33,7 @@ const TransacaoType = new GraphQLObjectType({
 const SaldoTransacoesType = new GraphQLObjectType({
   name: 'SaldoTransacoes',
   fields: () => ({
+    cliente: { type: ClienteType },
     saldo: {
       type: new GraphQLObjectType({
         name: 'Saldo',
@@ -59,6 +68,7 @@ const RootQuery = new GraphQLObjectType({
         const transacoesResult = await Transacao.find({ clientId: id });
 
         return {
+          cliente: client,
           saldo: {
             total: client.saldo,
             limite: client.limite,
@@ -71,6 +81,63 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    makeTransacao: {
+      type: ClienteType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt) },
+        descricao: { type: new GraphQLNonNull(GraphQLString) },
+        tipo: { type: new GraphQLNonNull(GraphQLString) },
+        valor: { type: new GraphQLNonNull(GraphQLInt) }
+      },
+      async resolve(parent, args) {
+        const { id, descricao, tipo, valor } = args;
+
+        if (
+          (tipo !== 'd' && tipo !== 'c') ||
+          !descricao ||
+          descricao.length > 10 ||
+          descricao.length < 1 ||
+          !Number.isInteger(valor) ||
+          valor < 0
+        ) {
+          throw new Error('Invalid input');
+        }
+
+        if (id > 5 || id < 1) {
+          throw new Error('Client not found');
+        }
+
+        if (tipo === 'd') {
+          const extratoResult = await updateExtrato(id, valor * -1);
+          if (!extratoResult) {
+            throw new Error('Failed to update balance');
+          }
+        } else {
+          await updateExtrato(id, valor);
+        }
+
+        await createTransacao({ descricao, tipo, valor, clientId: id });
+        const cliente = await findById(id);
+
+        if (!cliente) {
+          throw new Error('Client not found');
+        }
+
+        return {
+          clientId: cliente.clientId,
+          nome: cliente.nome,
+          saldo: cliente.saldo,
+          limite: cliente.limite
+        };
+      }
+    }
+  }
+});
+
 export default new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
