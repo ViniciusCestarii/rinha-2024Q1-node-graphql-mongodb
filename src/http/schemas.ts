@@ -8,6 +8,7 @@ import {
 } from 'graphql';
 import { Cliente, Transacao } from '../db/models';
 import { createTransacao, findById, updateExtrato } from '../db/repository';
+import { NotFoundError } from 'elysia';
 
 const ClienteType = new GraphQLObjectType({
   name: 'Cliente',
@@ -57,12 +58,12 @@ const RootQuery = new GraphQLObjectType({
       async resolve(parent, args) {
         const id = args.id;
         if (id > 5 || id < 1) {
-          throw new Error('Client not found');
+          throw new NotFoundError('Client not found');
         }
 
         const client = await Cliente.findOne({ clientId: id });
         if (!client) {
-          throw new Error('Client not found');
+          throw new NotFoundError('Client not found');
         }
 
         const transacoesResult = await Transacao.find({ clientId: id });
@@ -107,7 +108,7 @@ const Mutation = new GraphQLObjectType({
         }
 
         if (id > 5 || id < 1) {
-          throw new Error('Client not found');
+          throw new NotFoundError('Client not found');
         }
 
         if (tipo === 'd') {
@@ -123,7 +124,7 @@ const Mutation = new GraphQLObjectType({
         const cliente = await findById(id);
 
         if (!cliente) {
-          throw new Error('Client not found');
+          throw new NotFoundError('Client not found');
         }
 
         return {
