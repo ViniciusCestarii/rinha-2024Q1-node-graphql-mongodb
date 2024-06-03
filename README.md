@@ -13,6 +13,9 @@ Esse projeto usa a stack da woovi (node, mongodb e graphql) para resolver a [seg
 docker-compose up
 ```
 
+3. Open graphql page and start to query
+> localhost:[YOUR API PORT SET ON .ENV]/graphql
+
 
 - query to fetch client "extrato"
 ```
