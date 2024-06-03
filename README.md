@@ -4,6 +4,15 @@
 
 Esse projeto usa a stack da woovi (node, mongodb e graphql) para resolver a [segunda edição da Rinha de Backend](https://github.com/zanfranceschi/rinha-de-backend-2024-q1)
 
+## Instalação
+
+1. configure .env file
+
+2. Run docker containers
+```bash
+docker-compose up
+```
+
 
 - query to fetch client "extrato"
 ```
