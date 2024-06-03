@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const envSchema = z.object({
   HTTP_PORT: z.string().default("3000"),
-  MONGO_INITDB_DATABASE: z.string(),
+  ME_CONFIG_MONGODB_URL: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);

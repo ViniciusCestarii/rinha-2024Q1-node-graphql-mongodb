@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import env from '../env';
 
-const { MONGO_INITDB_DATABASE } = env;
+const { ME_CONFIG_MONGODB_URL } = env;
 
-const mongoUri =`mongodb://db:27017/${MONGO_INITDB_DATABASE}`
+const mongoUri = ME_CONFIG_MONGODB_URL
 
 export const connectDb = () => {
 console.log('Connecting to MongoDB:', mongoUri);

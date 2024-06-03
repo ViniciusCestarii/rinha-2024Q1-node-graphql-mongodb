@@ -1,5 +1,5 @@
 var conn = new Mongo();
-var db = conn.getDB("db");
+var db = conn.getDB("mongodb");
 
 db.clientes.insertMany([
   { clientId: 1, nome: 'o barato sai caro', limite: 100000, saldo: 0 },
