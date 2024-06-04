@@ -14,7 +14,7 @@ docker-compose up
 ```
 
 3. Open graphql page and start to query
-> localhost:[YOUR API PORT SET ON .ENV]/graphql
+> localhost:9999/graphql
 
 
 - query to fetch client "extrato"
